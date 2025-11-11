@@ -2,7 +2,7 @@
 # This is our new "Rollout" blueprint with auto-rollback!
 
 apiVersion: argoproj.io/v1alpha1
-kind: Rollout  # <-- This is no longer a 'Deployment'
+kind: Rollout # <-- This is no longer a 'Deployment'
 metadata:
   name: frontend-node-rollout # <-- New name
 spec:
@@ -28,9 +28,10 @@ spec:
       maxSurge: "50%"
       maxUnavailable: 0
       steps:
-      - setWeight: 50 # Send 50% of users to the new version
-      - pause: {}      # Wait for 5 minutes (or manual promotion)
-      
+        - setWeight:
+            50 # Send 50% of users to the new version
+            # Wait for 5 minutes (or manual promotion)
+
       # This is the auto-rollback part!
       # If 20% of new versions fail, roll back
       abortScaleDownDelaySeconds: 5
@@ -38,7 +39,7 @@ spec:
         httpGet:
           path: / # Check the homepage
           port: 3000
-          
+
 ---
 # === THE SERVICE ===
 # This part is almost the same
