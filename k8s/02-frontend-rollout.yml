@@ -1,0 +1,56 @@
+# 02-frontend-rollout.yml
+# This is the "blueprint" for our frontend with auto-rollback!
+
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout  # <-- This is the special "Rollout" type
+metadata:
+  name: frontend-node-rollout
+spec:
+  replicas: 2 # <-- We are keeping our 2 replicas
+  selector:
+    matchLabels:
+      app: frontend-node
+  template:
+    metadata:
+      labels:
+        app: frontend-node
+    spec:
+      containers:
+        - name: frontend-node-container
+          # Get the "box" from the "shelf"
+          image: mayank750703/frontend-node:v1 # <-- This is our GOOD version
+          ports:
+            - containerPort: 3000
+
+  # === THIS IS THE AUTO-ROLLBACK STRATEGY ===
+  strategy:
+    canary:
+      maxSurge: "50%"
+      maxUnavailable: 0
+      steps:
+      - setWeight: 50 # Send 50% of users to the new version
+      - pause: {}      # Wait for 5 minutes (or manual promotion)
+      
+      # This is the auto-rollback part!
+      abortScaleDownDelaySeconds: 5
+      scaleDownActivenessProbe:
+        httpGet:
+          path: / # Check the homepage
+          port: 3000
+          
+---
+# === THE SERVICE ===
+# This part is almost the same
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-node-service
+spec:
+  type: NodePort
+  selector:
+    app: frontend-node # <-- This still matches our app label
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30007
