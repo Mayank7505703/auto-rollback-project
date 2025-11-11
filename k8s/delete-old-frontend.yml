@@ -1,9 +1,0 @@
-# delete-old-frontend.yml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend-node-deployment
-  # This "prune" annotation tells Argo CD to delete this
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=true
-$patch: delete
