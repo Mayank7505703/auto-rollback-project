@@ -1,10 +1,10 @@
-# 02-frontend-rollout.yml
-# This is the "blueprint" for our frontend with auto-rollback!
+# 02-frontend.yml
+# This is our new "Rollout" blueprint with auto-rollback!
 
 apiVersion: argoproj.io/v1alpha1
-kind: Rollout # <-- This is the special "Rollout" type
+kind: Rollout  # <-- This is no longer a 'Deployment'
 metadata:
-  name: frontend-node-rollout
+  name: frontend-node-rollout # <-- New name
 spec:
   replicas: 2 # <-- We are keeping our 2 replicas
   selector:
@@ -24,21 +24,21 @@ spec:
 
   # === THIS IS THE AUTO-ROLLBACK STRATEGY ===
   strategy:
-    canary:
+    canary: # This is a "canary" strategy
       maxSurge: "50%"
       maxUnavailable: 0
       steps:
-        - setWeight:
-            50 # Send 50% of users to the new version
-            # Wait for 5 minutes (or manual promotion)
-
+      - setWeight: 50 # Send 50% of users to the new version
+      - pause: {}      # Wait for 5 minutes (or manual promotion)
+      
       # This is the auto-rollback part!
+      # If 20% of new versions fail, roll back
       abortScaleDownDelaySeconds: 5
       scaleDownActivenessProbe:
         httpGet:
           path: / # Check the homepage
           port: 3000
-
+          
 ---
 # === THE SERVICE ===
 # This part is almost the same
