@@ -23,11 +23,11 @@ app.post('/api', async (request, response) => {
     },
     body: JSON.stringify(request.body)
   }
-  const py_response = await fetch('http://localhost:5000/py_api', post_options)
-  const result = await py_response.json()
+const py_response = await fetch('http://backend-python:5000/py_api', post_options)  
+const result = await py_response.json()
   response.json(result)
 })
 
 app.listen(port, () => {
-  console.log(`Server started – go to http://localhost:${port}`)
+  console.log(`Server started - go to http://localhost:${port}`)
 })

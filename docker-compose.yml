@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  # This is our Python "Chef"
+  backend-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+  
+  # This is our Node.js "Waiter"
+  frontend-node:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    ports:
+      - "3000:3000" # Connects your PC's port 3000 to the container's port 3000
+    depends_on:
+      - backend-python # Tells Node.js to wait for Python to start first

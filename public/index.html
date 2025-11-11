@@ -1,21 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Webcam demo</title>
-    <!--Link to CSS stylesheet-->
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <!--Main JavaScript program-->
-    <script defer src="client.js"></script>
-  </head>
-  <body>
-    <div class="half"><!--Div for left half-->
-      <video id="video" autoplay muted></video><!--Hidden video element-->
-      <canvas id="webcam_canvas"></canvas><!--Canvas where webcam video is drawn-->
-    </div><div class="half"><!--Div for right half-->
-      <canvas id="response_canvas"></canvas><!--Canvas where response is drawn-->
-    </div>
-  </body>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Video Processing</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  
+  <style>
+    /* A small tweak to make the video elements fit the card perfectly */
+    .card-body-video {
+      padding: 0;
+      overflow: hidden; /* Ensures rounded corners on the video */
+    }
+    .card-body-video video,
+    .card-body-video canvas {
+      display: block; /* Removes any extra space */
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body class="bg-body-tertiary">
+
+  <main class="container-fluid my-4">
+
+    <header class="text-center p-4 mb-4 border-bottom border-secondary">
+      <h1 class="display-5 fw-bold text-primary">
+        🚀 Real-Time AI Video Processing
+      </h1>
+      <p class="fs-5 text-body-secondary">
+        A full-stack demonstration using Node.js, Flask, and Bootstrap 5.
+      </p>
+    </header>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-lg-6">
+        <div class="card shadow-lg border-primary h-100">
+          <div class="card-header fs-4 text-primary-emphasis">
+            Live Webcam (Input)
+          </div>
+          <div class="card-body card-body-video">
+            <video id="video" autoplay muted class="bg-black"></video>
+          </div>
+          <div class="card-footer text-body-secondary">
+            This is the raw, unprocessed feed from your device.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card shadow-lg border-success h-100">
+          <div class="card-header fs-4 text-success-emphasis">
+            Processed Feed (Output)
+          </div>
+          <div class="card-body card-body-video">
+            <canvas id="response_canvas" class="bg-black"></canvas>
+          </div>
+          <div class="card-footer text-body-secondary">
+            This feed is processed in real-time by our Python backend.
+          </div>
+        </div>
+      </div>
+
+    </div></main>
+
+  <canvas id="webcam_canvas" style="display: none;"></canvas>
+  
+  <script src="client.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 </html>

@@ -1,0 +1,41 @@
+# 01-backend.yml
+# Yeh hamaare Python "chef" ka blueprint hai
+
+# === PART 1: THE DEPLOYMENT ===
+# Yeh Kubernetes ko bataata hai ki "box" ko kaise chalaana hai
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-python-deployment # Is blueprint ka naam
+spec:
+  replicas: 1 # "Kripya is box kee 1 copy chalaayen"
+  selector:
+    matchLabels:
+      app: backend-python # Is app ko pehchaanane ke liye ek label
+  template:
+    metadata:
+      labels:
+        app: backend-python # "Box" ko yah label den
+    spec:
+      containers:
+        - name: backend-python-container
+          # === YAH SABSE ZAROOREE HISSA HAI ===
+          # K8s ko bataata hai ki "shelf" se kaun sa "box" laana hai
+          image: mayank750703/backend-python:v1
+          ports:
+            - containerPort: 5000 # Box ke andar ka port
+
+---
+# === PART 2: THE SERVICE ===
+# Yah "box" ko ek network naam deta hai
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-python  # <-- YAH LINE 27 HAI
+spec:
+  selector:
+    app: backend-python # Is niyam ko is label vaale kisee bhee "box" par laagoo karen
+  ports:
+    - protocol: TCP
+      port: 5000       # Network port
+      targetPort: 5000 # Box ke andar ka port
