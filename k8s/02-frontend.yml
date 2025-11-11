@@ -7,7 +7,7 @@ kind: Deployment
 metadata:
   name: frontend-node-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend-node
@@ -33,7 +33,7 @@ metadata:
 spec:
   # This 'NodePort' type makes it accessible
   # from your computer's network
-  type: NodePort 
+  type: NodePort
   selector:
     app: frontend-node
   ports:
