@@ -18,7 +18,7 @@ spec:
       containers:
         - name: frontend-node-container
           # Get the "box" from the "shelf"
-          image: mayank750703/frontend-node:v1 # <-- This is our GOOD version
+          image: mayank750703/frontend-node:v-broken
           ports:
             - containerPort: 3000
 
